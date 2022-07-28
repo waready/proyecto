@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>proyect</h1>
+    <h3>Choose the local(s) zip file(s)</h3>
+    <p class="note">Note : your browser will process the zip file, don't choose a file too big !</p>
+    <input type="file" id="file" name="file" multiple /><br />
+
+    <div id="result_block" class="hidden">
+    <h3>Content :</h3>
+    <div id="result"></div>
+    </div>
+    <entryresult></entryresult>
+    <title></title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="dist/jszip.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+       "use strict";
+
+var $result = $("#result");
+$("#file").on("change", function(evt) {
+    // remove content
+    $result.html("");
+    // be sure to show the results
+    $("#result_block").removeClass("hidden").addClass("show");
+
+    // Closure to capture the file information.
+    function handleFile(f) {
+        var $title = $("<h4>", {
+            text : f.name
+        });
+        var $fileContent = $("<ul>");
+        $result.append($title);
+        $result.append($fileContent);
+
+        var dateBefore = new Date();
+        JSZip.loadAsync(f)                                   // 1) read the Blob
+            .then(function(zip) {
+                var dateAfter = new Date();
+                $title.append($("<span>", {
+                    "class": "small",
+                    text:" (loaded in " + (dateAfter - dateBefore) + "ms)"
+                }));
+
+                zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
+                    $fileContent.append($("<li>", {
+                        text : zipEntry.name
+                    }));
+                    console.log(zipEntry)
+                });
+                console.log(zip.files)
+               
+            }, function (e) {
+                $result.append($("<div>", {
+                    "class" : "alert alert-danger",
+                    text : "Error reading " + f.name + ": " + e.message
+                }));
+            });
+    }
+
+    var files = evt.target.files;
+    console.log(files)
+    for (var i = 0; i < files.length; i++) {
+        handleFile(files[i]);
+    }
+    /*
+    loadDoc()
+    function loadDoc() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "PBCPEDVB.xml", false);
+    xhttp.send();
+    myFunction(xhttp);//(this);
+}
+function myFunction(xml)
+{
+    var xmlDoc = xml.responseXML;
+    var parser = new DOMParser();
+    var xmlDoc = parser.parseFromString(xml.responseText, "application/xml");
+    var x;    
+    var txt = "";
+    var y;
+    console.log(xmlDoc)
+    //y = xmlDoc.getElementsByTagName("entryresult");//.childNodes[0];
+    //x = y[1].getElementsByTagName("title")[0].childNodes[0].nodeValue;
+    //alert(x);
+}*/
+
+if (window.XMLHttpRequest){ // code for IE7+, Firefox, Chrome, Opera, Safari
+	  var xmlDoc = new XMLHttpRequest();
+	  //alert('0,1');
+	}else{// code for IE6, IE5
+	  var xmlDoc =  ActiveXObject("Microsoft.XMLHTTP");
+	  //alert('0,2');
+	}
+ 
+	//alert('0,3');
+	xmlDoc.open("GET",'PBCPEDVB.xml',true);
+	//alert('0,4');
+	xmlDoc.send(null);
+	//alert('0,5');
+    //console.log(xmlDoc.XMLHttpRequest)
+	var xmlText = xmlDoc.responseText;
+	var xmlResult = xmlDoc.responseXML;
+	var xmlList = xmlResult.getElementsByTagName('subtitulo');
+	alert('1');
+ 
+ 
+	var count = xmlList.length;
+	var itm = null;
+	//alert('2');
+//var subtitulo = xmlDoc.getElementsByTagName("subtitulo")[0].innerHTML;
+//var texto = xmlDoc.getElementsByTagName("html")[0].innerHTML;
+//var url = xmlDoc.getElementsByTagName("url")[0].innerHTML;
+
+//Fuente: https://www.ejemplode.com/21-xml/527-ejemplo_de_ver_archivo_xml_en_html.html#ixzz7aFRLR0kW//
+
+
+});
+</script>
+</body>
+</html>

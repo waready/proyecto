@@ -1,0 +1,36 @@
+<html>
+<body>
+ 
+<script>
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.open("GET","PBCPEDVB.xml",false);
+xmlhttp.send();
+xmlDoc=xmlhttp.responseXML;
+ 
+console.log(xmlDoc)
+document.write("<table border='1'>");
+var x=xmlDoc.getElementsByTagName("ExportFile");
+console.log(x[0].getElementsByTagName("Objects"))
+var y = x[0].getElementsByTagName("Objects");
+var z = y[0].getElementsByTagName("Object");
+var w = z[0].getElementsByTagName("Part");
+for (i=0;i<y.length;i++)
+  {
+  document.write("<tr><td>");
+  document.write(y[i].getElementsByTagName("Source")[0].childNodes[0].nodeValue);
+  document.write("</td><td>");
+  //document.write(x[i].getElementsByTagName("url")[0].childNodes[0].nodeValue);
+  //document.write("</td></tr>");
+  }
+document.write("</table>");
+</script>
+ 
+</body>
+</html>
